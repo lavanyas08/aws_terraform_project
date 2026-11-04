@@ -115,6 +115,7 @@ resource "aws_iam_role_policy" "infrastructure_bucket" {
           "s3:DeleteBucket",
           "s3:DeleteBucketTagging",
           "s3:GetBucketLocation",
+          "s3:GetBucketPolicy",
           "s3:GetBucketTagging",
           "s3:ListBucket",
           "s3:PutBucketTagging",
