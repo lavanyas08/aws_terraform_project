@@ -8,5 +8,5 @@ resource "aws_s3_bucket" "aws_terraform_project_state_bucket" {
     Project     = var.project_name
     ManagedBy   = "Terraform"
   }
-  
+
 }

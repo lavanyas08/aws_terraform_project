@@ -6,7 +6,7 @@
 # # resource "aws_iam_openid_connect_provider" "github" {
 # #   url             = "https://token.actions.githubusercontent.com"
 # #   client_id_list  = ["sts.amazonaws.com"]
-  
+
 # #   # Pulls the active, live thumbprint automatically so it never goes stale
 # #   thumbprint_list = data.aws_iam_openid_connect_provider.github_live.thumbprint_list
 # # }
