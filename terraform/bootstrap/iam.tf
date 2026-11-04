@@ -86,7 +86,7 @@ resource "aws_iam_role" "example_role" {
             "token.actions.githubusercontent.com:aud" = "sts.amazonaws.com"
           }
           StringLike = {
-            "token.actions.githubusercontent.com:sub" = "repo:lavanyas08/aws_terraform_project:*"
+            "token.actions.githubusercontent.com:sub" = "repo:lavanyas08@113415290/aws_terraform_project@1436850400:*"
           }
         }
       }
