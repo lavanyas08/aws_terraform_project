@@ -12,3 +12,8 @@ variable "github_oidc_subject" {
   description = "The subject of the GitHub OIDC provider"
   default     = "repo:lavanyas08@113415290/aws_terraform_project@1436850400"
 }
+
+variable "infrastructure_bucket_name" {
+  description = "Name of the S3 bucket managed by the infrastructure workflow"
+  default     = "aws-terraform-project-state-bucket"
+}

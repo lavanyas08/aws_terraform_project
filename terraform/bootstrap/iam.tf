@@ -89,6 +89,7 @@ resource "aws_iam_role" "example_role" {
             "token.actions.githubusercontent.com:sub" = "repo:lavanyas08@113415290/aws_terraform_project@1436850400:*"
           }
         }
+
       }
     ]
   })
@@ -98,4 +99,28 @@ resource "aws_iam_role" "example_role" {
     Environment = "example-bootstrap"
     ManagedBy   = "Terraform"
   }
+}
+
+resource "aws_iam_role_policy" "infrastructure_bucket" {
+  name = "manage-infrastructure-bucket"
+  role = aws_iam_role.example_role.id
+
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Effect = "Allow"
+        Action = [
+          "s3:CreateBucket",
+          "s3:DeleteBucket",
+          "s3:DeleteBucketTagging",
+          "s3:GetBucketLocation",
+          "s3:GetBucketTagging",
+          "s3:ListBucket",
+          "s3:PutBucketTagging",
+        ]
+        Resource = "arn:aws:s3:::${var.infrastructure_bucket_name}"
+      }
+    ]
+  })
 }
