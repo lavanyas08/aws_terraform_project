@@ -25,25 +25,30 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v4
 
+      - name: Debug OIDC claims
+        run: |
+          TOKEN=$(curl -s -H "Authorization: bearer $ACTIONS_ID_TOKEN_REQUEST_TOKEN" \
+            "$ACTIONS_ID_TOKEN_REQUEST_URL&audience=sts.amazonaws.com" | jq -r .value)
+          echo "$TOKEN" | cut -d. -f2 | base64 -d 2>/dev/null | jq '{sub, aud, iss, repository}'
+
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v4
         with:
-          role-to-assume: ${{ secrets.AWS_ROLE_ARN }}
+          role-to-assume: arn:aws:iam::679090980402:role/example-terr-role
           aws-region: eu-north-1
           #role-session-name: GitHubActions
 
       - name: verify AWS Identity
         run: aws sts get-caller-identity
 
-      - name: Setup Terraform  
+      - name: Setup Terraform
         uses: hashicorp/setup-terraform@v3
         with:
           terraform_version: 1.13.1
-          
+
       - name: terraform format
         working-directory: terraform/infrastructure
         run: terraform fmt -check -recursive
-
 
       - name: Initialize Terraform
         working-directory: terraform/infrastructure
