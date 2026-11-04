@@ -50,10 +50,10 @@
 #         Action    = "sts:AssumeRoleWithWebIdentity"
 #         Condition = {
 #           StringEquals = {
-#             "://githubusercontent.com" = "sts.amazonaws.com"
+#             "token.actions.githubusercontent.com:aud" = "sts.amazonaws.com"
 #           }
 #           StringLike = {
-#             "://githubusercontent.com" = "repo:lavanyas08/aws_terraform_project:*"
+#             "token.actions.githubusercontent.com:sub" = "repo:lavanyas08/aws_terraform_project:*"
 #           }
 #         }
 
