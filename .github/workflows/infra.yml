@@ -1,0 +1,62 @@
+name: AWS Infrastructure Deployment
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+    paths:
+      - 'terraform/infrastructure/**'
+      - '.github/workflows/infra.yml'
+
+env:
+  TF_IN_AUTOMATION: true
+
+jobs:
+  terraform:
+    name: Provision AWS Infrastructure
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: read
+      id-token: write
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: ${{ secrets.AWS_ROLE_ARN }}
+          aws-region: eu-north-1
+          #role-session-name: GitHubActions
+
+      - name: verify AWS Identity
+        run: aws sts get-caller-identity
+
+      - name: Setup Terraform  
+        uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: 1.13.1
+          
+      - name: terraform format
+        working-directory: terraform/infrastructure
+        run: terraform fmt -check -recursive
+
+
+      - name: Initialize Terraform
+        working-directory: terraform/infrastructure
+        run: terraform init
+
+      - name: Validate Terraform Configuration
+        working-directory: terraform/infrastructure
+        run: terraform validate
+
+      - name: Plan Terraform Deployment
+        working-directory: terraform/infrastructure
+        run: terraform plan -no-color
+
+      - name: Apply Terraform Deployment
+        working-directory: terraform/infrastructure
+        run: terraform apply -auto-approve -no-color
